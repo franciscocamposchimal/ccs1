@@ -1,0 +1,20 @@
+   <hr/>
+   <div class="panel panel-default">
+  <div class="panel-heading">
+    <h1 class="panel-title">Aval</h1>
+  </div>
+  <div class="panel-body">
+    <p>
+    <% @client.avals.each do |h| %>
+    <p> <strong>Nombre Aval: </strong> <%= h.nombre %><br/></p>
+    <p><strong>Apellidos Aval: </strong> <%= h.apellidos %><br/></p>
+    <p> <strong>INE: </strong> <%= h.ine %><br/></p>
+    <p> <strong>Dirección: </strong> <%= h.direccion %><br/></p>
+    <p> <strong>Celular: </strong> <%= h.celular %><br/></p>
+    <% end %>
+  </p>
+  </div>
+</div>
+             
+ 
+<hr/>

@@ -1,0 +1,86 @@
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema.define(version: 20170915152859) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "avals", force: :cascade do |t|
+    t.string "nombre"
+    t.string "apellidos"
+    t.string "ine"
+    t.string "direccion"
+    t.string "celular"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "avals_clients", id: false, force: :cascade do |t|
+    t.bigint "aval_id", null: false
+    t.bigint "client_id", null: false
+    t.index ["aval_id", "client_id"], name: "index_avals_clients_on_aval_id_and_client_id"
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.string "status", default: "Activo"
+    t.string "nombre"
+    t.string "apellidos"
+    t.string "tipo"
+    t.string "localidad"
+    t.string "direccion"
+    t.string "celular"
+    t.string "ine"
+    t.integer "ruta"
+    t.integer "grupo"
+    t.integer "monto"
+    t.date "visita"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "num_pago"
+    t.integer "monto"
+    t.date "fecha_pago"
+    t.integer "multa", default: 0
+    t.string "status", default: "pagado"
+    t.text "registro"
+    t.bigint "client_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_payments_on_client_id"
+  end
+
+  create_table "records", force: :cascade do |t|
+    t.text "registro"
+    t.bigint "client_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_records_on_client_id"
+  end
+
+  create_table "warranties", force: :cascade do |t|
+    t.string "garantia1"
+    t.string "garantia2"
+    t.string "garantia3"
+    t.string "garantia4"
+    t.bigint "client_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_warranties_on_client_id"
+  end
+
+  add_foreign_key "payments", "clients"
+  add_foreign_key "records", "clients"
+  add_foreign_key "warranties", "clients"
+end

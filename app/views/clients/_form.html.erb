@@ -1,0 +1,206 @@
+<div style="padding: 10px" class="container">
+<%= nested_form_for(@client, :html => {:class => 'form-horizontal'}) do |form| %>
+  <% if client.errors.any? %>
+    <div id="error_explanation" class="alert alert-warning" role="alert" >
+      <h3><%= client.errors.count %> <strong>Error(es) verifica los campos :</strong></h3>
+    </div>
+      
+      <% client.errors.full_messages.each do |message| %>
+       <div class="alert alert-danger" role="alert" ><%= message %></div> 
+      <% end %>
+      
+    </div>
+  <% end %>  
+  <div class="panel panel-default" style="padding: 10px">
+<div style="color: white; background: blue; padding: 3px;">
+  <h1>Datos del Cliente</h1>
+</div>
+<br>
+  
+  <div class="row">
+
+  <div class="field col-md-5">
+    <%= form.label :nombre, "Apellidos" %>
+    <%= form.text_field :nombre, id: :client_nombre, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-5">
+    <%= form.label :apellidos, "Nombre(s)" %>
+    <%= form.text_field :apellidos, id: :client_apellidos, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-2">
+    <%= form.label :tipo %>
+    <%= form.select :tipo, [["Cliente","cliente"],["Colocadora","colocadora"]],{},{class: "form-control"} %>      
+  </div>
+
+  </div>
+
+  <!-- row 1 -->  
+
+  <br>
+ 
+  <div class="row">
+
+  <div class="field col-md-3">
+    <%= form.label :localidad %>
+    <%= form.text_field :localidad, id: :client_localidad, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-6">
+    <%= form.label :direccion, "Dirección" %>
+    <%= form.text_field :direccion, id: :client_direccion, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-3">
+    <%= form.label :celular %>
+    <%= form.telephone_field :celular, id: :client_celular, class: "form-control" %>
+  </div>
+
+  </div>
+
+  <!-- row 2 -->
+
+  <br>
+
+  <div class="row">
+
+  <div class="field col-md-5">
+    <%= form.label :ine, "INE" %>
+    <%= form.text_field :ine, id: :client_ine, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-1">
+    <%= form.label :ruta %>
+    <%= form.text_field :ruta, id: :client_ruta, class: "form-control" %>
+  </div>
+  
+  <div class="field col-md-1">
+    <%= form.label :grupo %>
+    <%= form.text_field :grupo, id: :client_grupo, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-2">
+    <%= form.label :monto, "Monto $" %>
+    <%= form.text_field :monto, id: :client_monto, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-3">
+    <%= form.label :visita %>
+    <br>
+    <%= form.date_field :visita, id: :client_visita, class: "form-control" %>
+  </div>
+
+  </div>
+
+  <!-- row 4 -->
+  <br>
+
+<div style="color: white; background: blue; padding: 3px;">
+  <h1>Datos del Aval</h1>
+</div>
+<br>
+
+  
+
+ <%= form.fields_for :avals, @avals do |a| %>
+ <div class="row">
+  <div class="field col-md-4">
+    <%= a.label :nombre, "Apellidos" %>
+    <%= a.text_field :nombre, id: :aval_nombre, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-4">
+    <%= a.label :apellidos, "Nombre(s)" %>
+    <%= a.text_field :apellidos, id: :aval_apellidos, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-4">
+    <%= a.label :ine, "INE" %>
+    <%= a.text_field :ine, id: :aval_ine, class: "form-control" %> 
+  </div>
+
+  </div>
+
+  <!-- row 5 -->
+
+  <br>
+
+  <div class="row">
+
+  <div class="field col-md-4">
+    <%= a.label :celular %>
+    <%= a.telephone_field :celular, id: :aval_celular, class: "form-control" %>
+  </div>
+
+  <div class="field col-md-8">
+    <%= a.label :direccion, "Dirección" %>
+    <%= a.text_field :direccion, id: :aval_direccion, class: "form-control" %>
+  </div>
+
+  </div>
+
+  <!-- row 6 -->
+  
+
+  <% end %>
+
+  <br>
+
+<div style="color: white; background: blue; padding: 3px;">
+  <h1>Garantías</h1>
+</div>
+<br>
+
+   <%= form.fields_for :warranties, @warranties do |c| %>
+   <div class="row">
+
+    <div class="field col-md-6">
+     <%= c.label :garantia1, "Grantía 1" %>
+     <%= c.text_field :garantia1, class: "form-control" %>
+    </div>
+
+    <div class="field col-md-6">
+     <%= c.label :garantia2, "Grantía 2" %>
+     <%= c.text_field :garantia2, class: "form-control" %>       
+    </div>
+
+   </div>
+
+   <!-- row 7 -->
+
+   <br>
+
+   <div class="row">
+
+    <div class="field col-md-6"> 
+    <%= c.label :garantia3, "Grantía 3" %>
+    <%= c.text_field :garantia3, class: "form-control" %> </div>
+
+    <div class="field col-md-6">
+    <%= c.label :garantia4, "Grantía 4" %>
+     <%= c.text_field :garantia4, class: "form-control" %> </div>
+   </div>
+  <% end %>
+
+  <!-- row 8 -->
+
+
+  <br>
+
+  <div class="row">
+
+  <div class="actions col-md-2 col-md-offset-4">
+    <%= form.submit class: "btn btn-success btn-lg" %>
+  </div>  
+  <div class="actions col-md-2">
+    <%= link_to 'Regresar', clients_path, class: "btn btn-warning btn-lg" %>
+  </div>  
+ </div> 
+ 
+<% end %>
+
+</div> <!-- div contenido -->
+
+
+

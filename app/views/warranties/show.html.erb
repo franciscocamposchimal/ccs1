@@ -1,0 +1,19 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1 class="panel-title">Garantías</h1>
+  </div>
+  <div class="panel-body">
+    <p>
+    <% @client.warranties.each do |g| %>
+
+    <p> <strong>Garantía 1: </strong> <%= g.garantia1 %><br/></p>
+    <p> <strong>Garantía 2: </strong> <%= g.garantia2 %><br/></p>
+    <p><strong>Garantía 3: </strong> <%= g.garantia3 %><br/></p>
+    <p><strong>Garantía 4: </strong> <%= g.garantia4 %><br/></p>
+       
+    <% end %>
+  </p>
+  </div>
+</div>
+    
+<hr/>

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  num_pago: 1
+  monto: 1
+  fecha_pago: 2017-09-06
+  status: MyString
+  registro: MyText
+  client: one
+
+two:
+  num_pago: 1
+  monto: 1
+  fecha_pago: 2017-09-06
+  status: MyString
+  registro: MyText
+  client: two

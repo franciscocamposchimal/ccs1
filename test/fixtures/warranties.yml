@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Garantia1: MyString
+  Garantia2: MyString
+  Garantia3: MyString
+  Garantia4: MyString
+  client: one
+
+two:
+  Garantia1: MyString
+  Garantia2: MyString
+  Garantia3: MyString
+  Garantia4: MyString
+  client: two

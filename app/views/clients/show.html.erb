@@ -1,0 +1,86 @@
+
+<div class="container" style="padding: 5px;">
+<% if flash[:notice] %>
+<div class="alert alert-info" role="alert">
+<p id="notice"><%= notice %></p>
+</div>
+<% end %>
+
+<%= link_to 'Editar', edit_client_path(@client), class: "btn btn-warning" %> |
+<%= link_to 'Regresar', clients_path, class: "btn btn-primary" %>
+ <hr/>
+<div class="panel panel-info">
+  <div class="panel-heading"><h1 class="panel-title">Cliente</h1></div>
+  <div class="panel-body">
+    <p>
+    
+  <strong>Nombre:</strong>
+  <%= @client.nombre %>
+</p>
+
+<p>
+  <strong>Apellidos:</strong>
+  <%= @client.apellidos %>
+</p>
+
+<p>
+  <strong>Tipo:</strong>
+  <%= @client.tipo %>
+</p>
+
+<p>
+  <strong>Localidad:</strong>
+  <%= @client.localidad %>
+</p>
+
+<p>
+  <strong>Direccion:</strong>
+  <%= @client.direccion %>
+</p>
+
+<p>
+  <strong>Celular:</strong>
+  <%= @client.celular %>
+</p>
+
+<p>
+  <strong>Ine:</strong>
+  <%= @client.ine %>
+</p>
+
+<p>
+  <strong>Ruta:</strong>
+  <%= @client.ruta %>
+</p>
+
+<p>
+  <strong>Grupo:</strong>
+  <%= @client.grupo %>
+</p>
+
+ <p>
+  <strong>Monto a pagar : $ </strong>
+  <%= @pago_con_interes %>
+ </p>
+<p>
+  
+
+<%= render template: "payments/show.html.erb" %>
+
+<p>
+  <strong>Día de visita:</strong>
+  <p><%= @dia_visita %>
+  <%= @client.visita %></p>
+
+ 
+</p>
+
+  </div>
+</div>
+
+
+<%= render template: "avals/show.html.erb" %>
+<%= render template: "warranties/show.html.erb" %>
+
+
+</div>

@@ -1,0 +1,42 @@
+<%= f.fields_for :warranties  do |form| %>
+  <% if warranty.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(warranty.errors.count, "error") %> prohibited this warranty from being saved:</h2>
+
+      <ul>
+      <% warranty.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :garantia1 %>
+    <%= form.text_field :garantia1, id: :warranty_garantia1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :garantia2 %>
+    <%= form.text_field :garantia2, id: :warranty_garantia2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :garantia3 %>
+    <%= form.text_field :garantia3, id: :warranty_garantia3 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :garantia4 %>
+    <%= form.text_field :garantia4, id: :warranty_garantia4 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :client_id %>
+    <%= form.text_field :client_id, id: :warranty_client_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
