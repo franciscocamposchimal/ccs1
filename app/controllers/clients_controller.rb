@@ -52,9 +52,8 @@ class ClientsController < ApplicationController
       format.html
       format.json
       format.pdf do
-        pdf = Prawn::Document.new
-        pdf.text "Hello"
-        send_data pdf.render, filename: 'clientes.pdf', type: 'application/pdf', disposition: 'inline'
+        pdf = ClientsPdf.new(@clients)
+        send_data pdf.render, filename: 'clients.pdf', type: 'application/pdf', disposition: 'inline'
       end
     end
   end

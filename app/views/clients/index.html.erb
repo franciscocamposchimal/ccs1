@@ -17,7 +17,7 @@
 		<%= link_to 'Nuevo cliente', new_client_path, class: "btn btn-success", role: 'button' %>
 	</div>
     <div class="col-md-10">
-    	
+    	<%= link_to 'Generar PDF', clients_path(@clients, format: "pdf") %>
     </div>
 </div>
 
