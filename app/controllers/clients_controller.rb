@@ -4,7 +4,7 @@ class ClientsController < ApplicationController
   def renovar
     @client = Client.find(params[:id])
     respond_to do |format|
-      if @client.update(monto: params[:term].to_i, visita: params[:date], status:"Activo")
+      if @client.update(monto: params[:term].to_i, visita: params[:date], status:"Activo", grupo: params[:grup].to_i)
          @registro = Record.new(registro: @client.payment.registro, client_id: @client.id)
          @registro.save!
          @client.payment.update(num_pago: 1, monto: @client.calcula_pago_total, multa:0, registro:"")
@@ -14,49 +14,80 @@ class ClientsController < ApplicationController
       else
         format.html { render clients_path }
         format.json { render json: @client.errors, status: :unprocessable_entity }
-        format.js 
+        format.js
       end
-    end 
+    end
   end
 
   # GET /clients
   # GET /clients.json
   def index
-    @clients = Client.all.ultimos
+    @clients = Client.all
     @warranties = Warranty.all
     @avals = Aval.all
     @total = 0
-    
-   @clients.each {|elemento| 
+
+
+   @clients.each {|elemento|
     if elemento.status == "Activo"
       @total = @total+elemento.calcula_pago_total
     end}
-  
+
   #actualiza pagos
    @date = Date.today.strftime("%A")
 
    if @date == "Sunday"
-       
+
        @clients.each do |client|
           if  client.payment.updated_at.today?
              #client.actualiza_pagos
              flash.now[:notice] = 'Todos los registros han sido actualizados!'
-          else 
+          else
               #flash.now[:notice] = 'Todos los registros han sido actualizados!'
               client.actualiza_pagos
-          end 
+          end
       end
     end
-   #fin actualiza pagos 
-    respond_to do |format|
-      format.html
-      format.json
-      format.pdf do
-        pdf = ClientsPdf.new(@clients)
-        send_data pdf.render, filename: 'clients.pdf', type: 'application/pdf', disposition: 'inline'
+   #fin actualiza pagos
+
+   #  def generarpdf
+     #  @client = Client.order("ruta DESC")
+     #  if params[:localidad].present?
+     #      @client = @client.where("concept ILIKE ?", "%#{params[:localidad]}%")
+   #end
+     #  if params[:ruta].present?
+     #      @client = @client.where("ruta ILIKE ?", "%#{params[:ruta]}%")
+     #  end
+     #  if params[:grupo].present?
+     #      @client = @client.where("grupo ILIKE ?", "%#{params[:grupo]}%")
+     #  end
+   #end
+
+
+   #Generar PDF
+           if campo = params[:ruta]
+                ruta = params[:ruta]
+                grupo = params[:grupo]
+                localidad = params[:localidad]
+
+                 @clients = Client.where("ruta like ? AND grupo like? AND localidad like ?", ruta, grupo, localidad)
+                 respond_to do |format|
+                   format.html
+                   format.json
+                   format.pdf do
+
+                     pdf = ClientsPdf.new(@clients)
+                     #pdf.start_new_page(:layout => :landscape)
+                     #pdf.initialize_first_page(:layout => :landscape)
+                     send_data pdf.render, filename: 'clients.pdf', type: 'application/pdf', disposition: 'inline'
+                   end
+                 end
+           end #END IF
+  #fin pdf
+
+
       end
-    end
-  end
+
 
   # GET /clients/1
   # GET /clients/1.json
@@ -73,7 +104,7 @@ class ClientsController < ApplicationController
     else
       redirect_to clients_path
     end
-    
+
   end
 
   # GET /clients/new
@@ -108,7 +139,7 @@ class ClientsController < ApplicationController
   # PATCH/PUT /clients/1
   # PATCH/PUT /clients/1.json
   def update
-    
+
     respond_to do |format|
       if @client.update(client_params)
         format.html { redirect_to clients_path, notice: 'Se modificó un cliente.' }
@@ -117,7 +148,7 @@ class ClientsController < ApplicationController
       else
         format.html { render :edit }
         format.json { respond_with_bip(@client)  }
-        format.js 
+        format.js
       end
     end
   end

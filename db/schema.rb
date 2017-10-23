@@ -12,9 +12,6 @@
 
 ActiveRecord::Schema.define(version: 20170915152859) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "avals", force: :cascade do |t|
     t.string "nombre"
     t.string "apellidos"
@@ -26,8 +23,8 @@ ActiveRecord::Schema.define(version: 20170915152859) do
   end
 
   create_table "avals_clients", id: false, force: :cascade do |t|
-    t.bigint "aval_id", null: false
-    t.bigint "client_id", null: false
+    t.integer "aval_id", null: false
+    t.integer "client_id", null: false
     t.index ["aval_id", "client_id"], name: "index_avals_clients_on_aval_id_and_client_id"
   end
 
@@ -55,7 +52,7 @@ ActiveRecord::Schema.define(version: 20170915152859) do
     t.integer "multa", default: 0
     t.string "status", default: "pagado"
     t.text "registro"
-    t.bigint "client_id"
+    t.integer "client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_payments_on_client_id"
@@ -63,7 +60,7 @@ ActiveRecord::Schema.define(version: 20170915152859) do
 
   create_table "records", force: :cascade do |t|
     t.text "registro"
-    t.bigint "client_id"
+    t.integer "client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_records_on_client_id"
@@ -74,13 +71,10 @@ ActiveRecord::Schema.define(version: 20170915152859) do
     t.string "garantia2"
     t.string "garantia3"
     t.string "garantia4"
-    t.bigint "client_id"
+    t.integer "client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_warranties_on_client_id"
   end
 
-  add_foreign_key "payments", "clients"
-  add_foreign_key "records", "clients"
-  add_foreign_key "warranties", "clients"
 end

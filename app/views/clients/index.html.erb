@@ -1,6 +1,3 @@
-
-
-
 <% if flash[:notice] %>
 <div class="alert alert-info" role="alert">
 <p id="notice"><%= notice %></p>
@@ -16,10 +13,16 @@
 	<div class="col-md-2" align="center" style="padding-top: 10px;">
 		<%= link_to 'Nuevo cliente', new_client_path, class: "btn btn-success", role: 'button' %>
 	</div>
-    <div class="col-md-10">
-    	<%= link_to 'Generar PDF', clients_path(@clients, format: "pdf") %>
-    </div>
-</div>
+  <div class="col-md-2" align="center" style="padding-top: 10px;">
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">
+      Generar PDF
+    </button>
+	</div><br>
+
+
+
+</div><br>
+
 
 <div style="padding: 20px;width: auto;height: auto;">
 
@@ -31,16 +34,20 @@
       <th>Aval</th>
       <th>Status</th>
       <th># Pago</th>
+      <th>Ruta</th>
+      <th>Grupo</th>
+      <th>Monto</th>
+      <th>Poblado</th>
       <th>Status de pago</th>
       <th colspan="2">Opciones</th>
     </tr>
   </thead>
 
 
-  <tbody id="client-index">	
+  <tbody id="client-index">
      <% @clients.each do |client| %>
       <tr id="client_each_<%= client.id %>">
-      
+
         <td><%= client.nombre + " " +client.apellidos %></td>
         <% client.avals.each do |aval| %>
                <td> <%= aval.nombre + " " + aval.apellidos %> </td>
@@ -54,9 +61,12 @@
         <td bgcolor=" <%= @color %> " align="center" > <strong><%= best_in_place client, :status, :as => :select, :collection => [['Activo', 'Activo'],['Inactivo', 'Inactivo']] %></strong> </td>
 
         <td><%= client.payment.num_pago %></td>
-        
+        <td><%= client.ruta %></td>
+        <td><%= client.grupo %></td>
+        <td><%= client.monto %></td>
+        <td><%= client.localidad %></td>
          <td><%= best_in_place client.payment, :status, :url => payment_path(client), :as => :select, :collection => [['pagado', 'Pagado'],['Sin pagar', 'Sin pagar']] %></td>
-        
+
         <td align="center">
         <%= link_to 'Detalles', client, class: 'btn btn-info', role: 'button' %>
         <%= link_to 'Editar', edit_client_path(client), class: 'btn btn-warning' %>
@@ -65,7 +75,7 @@
          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#client_<%= client.id %>">
           Renovar
          </button>
-         <% end %>  
+         <% end %>
         </td>
       </tr>
       <!-- Modal - update  -->
@@ -86,7 +96,8 @@
                         <br><br>
                         <div class="field">
                         <strong>Saldo pendiente:</strong><br>
-                        <strong><%= client.payment.monto %></strong>
+                        <strong><%= client.payment.monto %></strong><br>
+
                       </div>
                         <br><br>
                       <div class="field">
@@ -94,6 +105,9 @@
                         <%= text_field_tag :term, params[:term], class: "form-control"%>
                         <strong>Fecha de renovación :</strong>
                         <%= date_field_tag :date, params[:date], class: "form-control"%>
+                        <strong>Grupo :</strong>
+                        <%= text_field_tag :grup, params[:grup], class:"form-control" %>
+
                       </div>
 
                       </div>
@@ -106,11 +120,38 @@
                   </div>
                   <% end %>
             <!-- Modal -->
+
+
+              <!-- MODAL PDF -->
+              <%= form_tag clients_path,method: :get do %>
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="myModalLabel">Generar Lista</h4>
+                    </div>
+                    <div class="modal-body">
+                          <%= text_field_tag :ruta, params[:ruta], class: "form-control", placeholder: "Ruta" %><br>
+                          <%= text_field_tag :grupo, params[:grupo], class: "form-control", placeholder: "Grupo" %><br>
+                          <%= text_field_tag :localidad, params[:localidad], class: "form-control", placeholder: "Localidad" %><br>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <%= submit_tag "Generar Lista", name: nil,  class: "btn btn-primary btn-suc" %>
+                    </div>
+                  </div>
+                  </div>
+             </div>
+             <% end %>
+               <!-- MODAL PDF -->
+
     <% end %>
   </tbody>
 </table>
 
-  
+
 </div>
 
 
@@ -121,7 +162,7 @@
   <div class="panel-body"><%= "#{@total}" %></div>
 </div>
   </div>
-  
+
 </div>
 </div>
 

@@ -1,5 +1,5 @@
 class Client < ApplicationRecord
-
+  #validates :nombre, format:{ with: /[A-Z]/ } #SOLO MAYUSCULAS
 	has_many :warranties, :dependent => :destroy
 	accepts_nested_attributes_for :warranties, :allow_destroy => true
 
@@ -15,15 +15,15 @@ class Client < ApplicationRecord
 	after_create :inserta
 
 	has_many :records, :dependent => :destroy
-
 	before_update :inserta_inactivo
  #SCOPES
     scope :ultimos, ->{ order("created_at DESC") }
     scope :activos, ->{ where(status: "Activo") }
     scope :inactivos, ->{ where.not(status: "Activo") }
 
+
     def inserta_inactivo
-         
+
     	if self.status == "Inactivo"
     		client = Client.find(self.id)
     		client.payment.update(monto: calcula_pago_total(), fecha_pago: suma_dias(), multa: 0)
@@ -36,10 +36,10 @@ class Client < ApplicationRecord
 		monto = divide_pagos()
 		fecha_pago = suma_dias()
 		pago_total = calcula_pago_total()
-		
+
 			pagos = Payment.new(num_pago: num_pago, monto: pago_total, fecha_pago: fecha_pago, registro: "", client_id: self.id)
 		    pagos.save!
-	
+
 	end
 	def actualiza_pagos
 		if self.status == "Activo"
@@ -61,10 +61,10 @@ class Client < ApplicationRecord
          	   self.payment.update(num_pago: 1, monto: 0,registro: "")
             else
             	if self.status == "Activo"
-            		 self.payment.update(num_pago: self.payment.num_pago + 1,monto: self.payment.monto - self.divide_pagos,  fecha_pago: self.siguiente, 
+            		 self.payment.update(num_pago: self.payment.num_pago + 1,monto: self.payment.monto - self.divide_pagos,  fecha_pago: self.siguiente,
 			         registro: self.payment.registro+", Num. de pago: "+self.payment.num_pago.to_s+", Saldo anterior: "+self.payment.monto.to_s+", Fecha semana anterior: "+self.payment.fecha_pago.to_s)
             	end
-         	  
+
             end
 		end
 	end
@@ -86,7 +86,7 @@ class Client < ApplicationRecord
   			monto = ((monto* 0.00)+monto).to_i
   		else
   			monto = ((monto* 0.50)+monto).to_i
-  		end 		
+  		end
   	end
 
   	def divide_pagos
@@ -96,7 +96,7 @@ class Client < ApplicationRecord
   	end
 #FIN DE CALCULAR PAGOS
 #fUNCIONES PARA CALCULAR LAS SEMANAS
-   
+
 		def nombre_dia_semana
 		  if self.status == "Activo"
 			dia_nombre = self.visita.strftime("%A")
@@ -120,7 +120,7 @@ class Client < ApplicationRecord
 
 
 		def suma_dias
-			
+
 				anio = self.visita.strftime("%Y")
 			   mes = self.visita.strftime("%m")
 			   dia = self.visita.strftime("%d")
@@ -144,8 +144,8 @@ class Client < ApplicationRecord
 
 			fecha = convierte_fechas(anio,mes,suma)
 		    return fecha
-			
-			
+
+
 		end
 
 		def suma_dia (dia_int,dia)
@@ -180,7 +180,7 @@ class Client < ApplicationRecord
 	    end
 
 	    def siguiente
-	    
+
 	    		anio = self.payment.fecha_pago.strftime("%Y")
 			    mes = self.payment.fecha_pago.strftime("%m")
 			    dia = self.payment.fecha_pago.strftime("%d")
@@ -204,9 +204,9 @@ class Client < ApplicationRecord
 
 			fecha = convierte_fechas(anio,mes,suma)
 		    return fecha
-	       
+
 	    end
-	    	
+
 #FIN DE CALCULAR SEMANAS
-	     
+
 end
