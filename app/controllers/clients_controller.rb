@@ -1,5 +1,9 @@
 class ClientsController < ApplicationController
+  before_action :authenticate_user!, except: [:show]
   before_action :set_client, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_jefecaptura!, only: [:edit, :update]
+  before_action :authenticate_admin!, only: [:destroy]
+
 
   def renovar
     @client = Client.find(params[:id])
@@ -22,7 +26,8 @@ class ClientsController < ApplicationController
   # GET /clients
   # GET /clients.json
   def index
-    @clients = Client.all
+    @search = Client.search(params[:q])
+    @clients = @search.result
     @warranties = Warranty.all
     @avals = Aval.all
     @total = 0
@@ -50,43 +55,16 @@ class ClientsController < ApplicationController
     end
    #fin actualiza pagos
 
-   #  def generarpdf
-     #  @client = Client.order("ruta DESC")
-     #  if params[:localidad].present?
-     #      @client = @client.where("concept ILIKE ?", "%#{params[:localidad]}%")
-   #end
-     #  if params[:ruta].present?
-     #      @client = @client.where("ruta ILIKE ?", "%#{params[:ruta]}%")
-     #  end
-     #  if params[:grupo].present?
-     #      @client = @client.where("grupo ILIKE ?", "%#{params[:grupo]}%")
-     #  end
-   #end
+   #Generar PDf
+  if  params[:ruta].present? && params[:grupo].present? && params[:localidad].present?
 
+   @filtro = Client.where("ruta like ? AND grupo like? AND localidad like ?", params[:ruta], params[:grupo], params[:localidad])
+     pdf = ClientsPdf.new(@filtro)
 
-   #Generar PDF
-           if campo = params[:ruta]
-                ruta = params[:ruta]
-                grupo = params[:grupo]
-                localidad = params[:localidad]
-
-                 @clients = Client.where("ruta like ? AND grupo like? AND localidad like ?", ruta, grupo, localidad)
-                 respond_to do |format|
-                   format.html
-                   format.json
-                   format.pdf do
-
-                     pdf = ClientsPdf.new(@clients)
-                     #pdf.start_new_page(:layout => :landscape)
-                     #pdf.initialize_first_page(:layout => :landscape)
-                     send_data pdf.render, filename: 'clients.pdf', type: 'application/pdf', disposition: 'inline'
-                   end
-                 end
-           end #END IF
+     send_data pdf.render, filename: 'clients.pdf', type: 'application/pdf', disposition: 'inline'
+  end
   #fin pdf
-
-
-      end
+  end
 
 
   # GET /clients/1

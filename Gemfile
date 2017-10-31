@@ -18,8 +18,8 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
-gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
-gem 'jquery-ui-rails', '~> 6.0', '>= 6.0.1'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
@@ -40,6 +40,10 @@ gem 'prawn-table', '~> 0.2.2'
 gem 'wkhtmltopdf-heroku'
 gem 'best_in_place', '~> 3.1', '>= 3.1.1'
 
+gem 'devise'
+gem 'rails_admin', '~> 1.2'
+gem 'rails_admin-i18n', '~> 1.11', '>= 1.11.2'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -57,6 +61,6 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-#ruby "2.2.6"
+ruby "2.2.6"
 #ruby "2.4.1"
-ruby '2.3.3'
+#ruby '2.3.3'

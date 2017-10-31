@@ -10,7 +10,7 @@ class Client < ApplicationRecord
 	validates :visita, presence: { message: "no contiene ninguna fecha" }
 	validates :monto, presence: { message: "no ingresado" }
 	after_save :nombre_dia_semana
-	#validates :ine, length: {minimum: 18, maximum: 18}
+	validates :ine, length: {minimum: 18, maximum: 18}
 	has_one :payment,:dependent => :destroy
 	after_create :inserta
 
@@ -19,7 +19,7 @@ class Client < ApplicationRecord
  #SCOPES
     scope :ultimos, ->{ order("created_at DESC") }
     scope :activos, ->{ where(status: "Activo") }
-    scope :inactivos, ->{ where.not(status: "Activo") }
+	scope :inactivos, ->{ where.not(status: "Activo") }
 
 
     def inserta_inactivo

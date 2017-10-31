@@ -4,22 +4,45 @@ class ClientsPdf < Prawn::Document
 		super(top_margin: 10, :page_layout => :landscape, margin: [0, 15, 0, 15])
 		@cliente = clients
 		grupo_items
+		cabecera_items
 		line_items
 	end
 
+#NUMERO DE GRUPO
 		def grupo_items
-			table grupo_rows, :cell_style => { :width => 760, :height => 590, :size => 200, :align => :center, :padding_top => 230}
-
+			table grupo_rows, :cell_style => { :width => 760, :height => 590, :size => 200, :align => :center, :padding_top => 230, :color => '2ECCFA'}
 		end
 
 	def grupo_rows
-
 		@cliente.each.map do |gr|
 			@grupo = gr.grupo
 			["\ #{@grupo}"]
 		end
 	end
+#FIN NUMERO DE grupo
 
+#CABECERA
+def cabecera_items
+	table cabecera_rows do
+		row(0).font_style = :bold
+		row(0).width = 381
+		columns(1).align = :right
+		self.row_colors = ['CEF6F5', 'FFFFFF']
+	end
+end
+
+	def cabecera_rows
+		@image = @imagen
+		@cliente.each.map do |cab|
+			@ruta = cab.ruta
+			@grupo = cab.grupo
+			@poblado = cab.localidad
+			["RUTA: \ #{@ruta}" "\nGRUPO: \ #{@grupo}"  "\nPOBLADO: \ #{@poblado}"] + [:image => "#{Rails.root}/app/assets/images/ccs.png",  :position => :center]
+		end
+	end
+#CABECERA
+
+#LISTA CLIENTES
 	def line_items
 		table clients_rows, :cell_style => {:padding => 3, :size => 9}
 	end
@@ -43,6 +66,6 @@ class ClientsPdf < Prawn::Document
 	  end
 	  rows
 	end
-
+#FIN LISTA CLIENTES
 
 end

@@ -1,9 +1,10 @@
-<% if flash[:notice] %>
-<div class="alert alert-info" role="alert">
-<p id="notice"><%= notice %></p>
-</div>
-<% end %>
 
+<div align="right" style="color: white;background: gray;padding: 2px;" >
+<%= current_user.name %>
+<% if user_signed_in? %>
+    <%= link_to "Cerrar sesion", destroy_user_session_path, class: "btn btn-danger" , method: :delete %>
+ <%end%>
+ </div>
 <div align="center" style="color: white;background: gray;padding: 2px;" >
 <h1>Clientes</h1>
  <%= @date %>
@@ -17,11 +18,43 @@
     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">
       Generar PDF
     </button>
+    </div>
+
+    <div class="col-md-2" align="center" style="padding-top: 10px;">
+    <%= link_to 'INICIO', clients_path, class: "btn btn-danger" %>
+    </div>
+
+    <div class="col-md-2" align="center" style="padding-top: 10px;">
+      <% if current_user.role == 3 %>
+        <%= link_to 'ADMINISTRADOR', rails_admin_path, class: "btn btn-success" %>
+      <% end %>
+   </div>
 	</div><br>
 
 
 
-</div><br>
+  <div class="row" style=" padding-left: 8px;" >
+    <%= search_form_for @search do |f| %>
+    <div class="col-md-2" align="center" style="padding-top: 10px;">
+      <%= f.text_field :nombre_cont, class: "form-control", placeholder: "NOMBRE" %>
+      </div>
+      <div class="col-md-2" align="center" style="padding-top: 10px;">
+      <%= f.text_field :ruta_lteq, class: "form-control", placeholder: "RUTA" %>
+      </div>
+      <div class="col-md-2" align="center" style="padding-top: 10px;">
+      <%= f.text_field :grupo_lteq, class: "form-control", placeholder: "GRUPO" %>
+      </div>
+      <div class="col-md-2" align="center" style="padding-top: 10px;">
+        <%= f.text_field :localidad_cont, class: "form-control", placeholder: "LOCALIDAD" %>
+        </div>
+
+      <div class="col-md-2" align="center" style="padding-top: 10px;">
+      <%= f.submit "BUSCAR", class: "btn btn-primary" %>
+      </div>
+    <%end%>
+</div>
+
+
 
 
 <div style="padding: 20px;width: auto;height: auto;">
@@ -32,7 +65,9 @@
     <tr>
       <th>Cliente</th>
       <th>Aval</th>
+      <% if current_user.role >= 2 %>
       <th>Status</th>
+      <%end%>
       <th># Pago</th>
       <th>Ruta</th>
       <th>Grupo</th>
@@ -53,12 +88,14 @@
                <td> <%= aval.nombre + " " + aval.apellidos %> </td>
          <% end %>
 
+         <% if current_user.role >= 2 %>
          <% if client.status =='Activo' %>
          <% @color = '#E0F8F1' %>
          <% else %>
          <%  @color = '#D8D8D8' %>
          <% end %>
         <td bgcolor=" <%= @color %> " align="center" > <strong><%= best_in_place client, :status, :as => :select, :collection => [['Activo', 'Activo'],['Inactivo', 'Inactivo']] %></strong> </td>
+        <%end%>
 
         <td><%= client.payment.num_pago %></td>
         <td><%= client.ruta %></td>
@@ -69,8 +106,12 @@
 
         <td align="center">
         <%= link_to 'Detalles', client, class: 'btn btn-info', role: 'button' %>
+        <% if current_user.role >= 2 %>
         <%= link_to 'Editar', edit_client_path(client), class: 'btn btn-warning' %>
+        <%end%>
+        <%if current_user.role ==3 %>
         <%= link_to 'Eliminar', client, method: :delete, data: { confirm: '¿Desea eliminar a este cliente : '+client.nombre+' '+client.apellidos+' ?' }, class: 'btn btn-danger', role: 'button' %>
+        <%end%>
          <% if client.payment.num_pago >= 10 %>
          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#client_<%= client.id %>">
           Renovar
@@ -154,6 +195,7 @@
 
 </div>
 
+<!-- TOTAL DE PRESTAMOS
 
 <div  align="right" class="row">
   <div class="col-sm-2">
@@ -162,8 +204,10 @@
   <div class="panel-body"><%= "#{@total}" %></div>
 </div>
   </div>
-
 </div>
+-->
+
+
 </div>
 
 
