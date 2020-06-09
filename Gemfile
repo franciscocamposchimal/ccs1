@@ -41,7 +41,7 @@ gem 'wkhtmltopdf-heroku'
 gem 'best_in_place', '~> 3.1', '>= 3.1.1'
 
 gem 'devise'
-gem 'rails_admin', '~> 1.2'
+gem 'rails_admin', '~> 2.0'
 gem 'rails_admin-i18n', '~> 1.11', '>= 1.11.2'
 
 group :development, :test do
