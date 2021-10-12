@@ -11,7 +11,7 @@ gem 'rails', '~> 5.1.1'
 gem 'sqlite3'
 #gem 'pg'
 gem 'ransack'
-gem 'puma', '~> 4.3'
+gem 'puma', '~> 5.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
